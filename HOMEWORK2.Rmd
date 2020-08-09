@@ -1,0 +1,597 @@
+---
+title: "HW 2"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+author: Prakhar Jain
+Date: "02/04/2020"
+---
+
+
+# Problem 1
+
+
+## Problem 1.a
+
+```{r}
+
+women
+View(women)
+str(women)
+
+# There are two variables in this data frame and they are height and weight.Height column represents the height of all the observation in inches and weight represents the weight of all the observation in lbs
+
+
+```
+
+## Problem 1.b
+
+```{r}
+## Calculating Body mass index
+## body mass index =weight in lbs * 703 / height in inches^2
+
+BMI <- ((women$weight *703) / ((women$height)^2))
+
+#rounding the body mass index
+
+BMI <- round(BMI,digits =1)
+
+# displaying BMI
+
+BMI
+
+
+```
+
+
+## Problem 1.c
+
+```{r}
+
+#adding BMI to women dataframe
+
+women <- data.frame(women,BMI)
+
+#displaying women data frame.
+View(women)
+
+```
+
+## Problem 1.d
+
+```{r}
+#calculating arithmetic mean for BMI
+
+arithmetic.mean.BMI <- sum(women$BMI)/ length(BMI)
+
+#displaying arithmetic mean for BMI
+
+arithmetic.mean.BMI
+
+#Calculating sample standard deviation for BMI
+
+sample.standard.deviation.BMI<- sqrt(sum((women$BMI -arithmetic.mean.BMI)^2) /(length(women$BMI)-1))
+
+# displaying sample standard deviation for BMI
+
+sample.standard.deviation.BMI
+
+
+#Calculating sample skewness for BMI
+
+sample.skewness.BMI <- (sum((women$BMI -arithmetic.mean.BMI)^3) /length(women$BMI))/ sqrt(((sum((women$BMI -arithmetic.mean.BMI)^2)) /(length(women$BMI)-1))^3)
+
+sample.skewness.BMI
+
+
+#Calculating sample kurtosis for BMI
+
+
+sample.kurtosis.BMI <- (sum((women$BMI -arithmetic.mean.BMI)^4) / length(women$BMI)) / ((sum((women$BMI -arithmetic.mean.BMI)^2)/ length(women$BMI))^2)
+
+sample.kurtosis.BMI
+
+
+```
+
+## Problem 1.e
+
+```{r}
+#Yes BMI is right skewed (sample.skewness.BMI =0.6945838) in addition to that the mean value for BMI is 22.70667 and median is 22.5  so mean > median
+```
+
+## Problem 1.f
+
+```{r}
+#BMI is playtkurtic as value of sample.kurtosis.BMI is 2.382815 which indicates distribution has fewer outliers so that its tail would be flatter
+```
+
+
+# Problem 2
+
+
+## Problem 2.a
+
+```{r}
+
+# to load the  data set filtered qb.csv , type below command on console and select the file
+# data1 <- read.csv(file.choose(),header=TRUE)
+# to display the data of NFL
+View(data1)
+
+```
+
+## Problem 2.b
+
+```{r}
+#Calculate the arithmetic mean, standard deviation, and skew for both the projection variable and the actual variable. Are there any noticable differences in the central tendency,variability, or shape of the two variables?
+
+
+#Calculation for the projection variable.
+
+#Calculating mean for the projection variable
+
+mean.projection <- mean(data1$projections)
+
+#displaying mean for the projection variable.
+
+mean.projection
+
+
+#Calculating standard deviation for the projection variable
+
+standard.deviation.projection <- sd(data1$projections)
+
+#displaying standard deviation for the projection variable.
+
+standard.deviation.projection
+
+
+#Calculating skewness for the projection variable
+
+skewness.projection.variable <-(sum((data1$projections -mean.projection)^3) /length(data1$projections)) / 
+(sqrt(((sum((data1$projections -mean.projection)^2)) /(length(data1$projections) -1))^3))
+
+#displaying skewness for the projection variable.
+
+skewness.projection.variable 
+
+
+# Calculation for the actual variable.
+
+#Calculating mean for the actual variable
+
+mean.actual <- mean(data1$actuals)
+
+#displaying mean for the actual variable.
+
+mean.actual
+
+#Calculating standard deviation for the actual variable
+
+standard.deviation.actual <- sd(data1$actuals)
+
+#displaying standard deviation for the projection variable.
+
+standard.deviation.actual
+
+
+#Calculating skewness for the actual variable
+
+skewness.actual.variable <-(sum((data1$actuals -mean.actual)^3) /length(data1$actuals)) / 
+(sqrt(((sum((data1$actuals -mean.actual)^2)) /(length(data1$actuals) -1))^3))
+
+#displaying skewness for the projection variable.
+
+skewness.actual.variable
+
+
+```
+
+
+## Problem 2.c
+
+
+```{r}
+#Using fivenum function
+our.five.sum <- fivenum(data1$actuals)
+
+#Displaying out for variable our.five.sum
+
+our.five.sum
+
+#Displaying the median that is Q3 when we display output using fivenum fuction
+
+our.five.sum[3]
+
+
+```
+
+
+## Problem 2.d
+
+```{r}
+#Use the function boxplot() to create two box plots, one for each variable (projections and actuals). You need only provide one argument, which is the variable.
+
+#boxplot for projections
+
+boxplot(data1$projections, col = "blue", horizontal = TRUE)
+
+#boxplot for actuals
+
+boxplot(data1$actuals, col = "blue", horizontal = TRUE)
+
+
+
+#Use the function plot() to create a scatter plot showing the relationship between projections and actuals. Provide just two inputs to the functions, the two variablesof interest. Does it look like the projections are fairly accurate?
+
+
+plot(data1$actuals,data1$projections, 
+     main = "actuals versus projections",
+     xlab = "actuals",
+     ylab = "projections",
+      pch = 1
+       )
+
+
+## The relationship between prjections and actuals is non- inear and the actuals are not matching with the projections values.
+
+#Use the function hist() to create two histograms, one for each variable (projectionsand actuals). You need only provide one argument, which is the variable.
+
+
+
+#creating histogram for the actuals
+
+hist(data1$actuals)
+
+
+#creating histogram for the projections
+
+hist(data1$projections)
+
+
+#The functions for plotting variables have many arguments that are customizable. Usethe help() function to explore some of these. Specifically, for histograms, explore the optional argument breaks, set it to 10 and to 30 to see the differences in the actuals histogram.
+
+
+hist(data1$actuals,breaks = 10)
+
+hist(data1$actuals,breaks = 30)
+
+
+```
+
+
+
+# Problem 3
+
+
+## Problem 3.a
+
+```{r}
+# Suppose we have a normally distributed variable with mean 0 and standard deviation 10, i.e.,population standard deviation, 10. To generate n numbers from this distribution, you can use the function rnorm and set the n argument to n, the mean argument to 0, and the sd argument to 10. Write code to generate 4 numbers.
+
+
+random.numbers <-rnorm(4,mean=0,sd=10)
+
+#to display the random numbers
+
+random.numbers
+
+#code to generate random numbers
+
+#n <-readline(prompt = "Enter the number")
+#random.numbers <- rnorm(n,mean=0,sd=10)
+
+#to display the random numbers
+
+#print(random.numbers)
+
+
+
+
+```
+
+## Problem 3.b
+
+```{r}
+#. On the sample created above, calculate the sample standard deviation s.
+
+
+mean.random.numbers <- mean(random.numbers)
+
+#to display the mean of the random.numbers
+
+mean.random.numbers
+
+
+#caluclating sample standard deviation using n-1
+ 
+sample.standard.deviation.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.nminus1
+
+```
+
+
+## Problem 3.c
+
+```{r}
+#. On the sample created above, calculate the sample standard deviation s using n only 
+
+mean.random.numbers <- mean(random.numbers)
+
+#to display the mean of the random.numbers
+
+mean.random.numbers
+
+
+#caluclating sample standard deviation using n-1
+ 
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+
+
+```
+
+## Problem 3.d
+
+```{r}
+#. Repeat the above 10 times, i.e., generate 4 numbers 10 times. Record the calculated standard deviation, both with the formula in part b and the formula in part c.
+
+
+# 1st time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+# 2nd time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+# 3rd time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#4th time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#5th time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#6th time
+
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+
+#7th time
+
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#8th time
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#9th time
+
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+
+
+
+
+#10th time
+
+
+random.numbers <- rnorm(4,mean=0,sd=10)
+
+random.numbers
+
+mean.random.numbers <- mean(random.numbers)
+
+sample.standard.deviation.using.nminus1 <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) -1))
+
+sample.standard.deviation.using.nminus1
+
+10 -sample.standard.deviation.using.nminus1
+
+sample.standard.deviation.using.n <- sqrt(sum((random.numbers - mean.random.numbers)^2)/ (length(random.numbers) ))
+
+sample.standard.deviation.using.n
+
+10 -sample.standard.deviation.using.n
+```
+
+## Problem 3.e
+
+```{r}
+## Creating a vector with differnce between 10 and Standard Deviation with length n-1
+x <- c(-7.858899, 4.519031, 1.015656, 3.482768, -13.09167, 2.288517,-3.748739, 1.311384,-2.99647, 5.474742)
+mean(x)
+median(x)
+sd(x)
+fivenum(x)
+boxplot(x, main = "boxplot of sd with n-1", horizontal = TRUE)
+IQR(x)
+
+
+## Creating a vector with differnce of 10 - Standard Deviation with length n
+y <- c(-5.46626, 5.253341, 2.21933, 4.355912, -9.997976, 3.32166, -1.906757, 2.475438, -1.255273, 6.081012)
+mean(y)
+median(y)
+sd(y)
+fivenum(y)
+boxplot(y, main = "boxplot of sd with n", horizontal = TRUE)
+IQR(y)
+
+
+## By comparing the boxplots of x and y we observe that the middle 50% of the values of standard deviation with length n-1 is approximately from -2 to 2 whereas the the middle 50% of the values of standard deviation with length n is approximately from 0 to 4. From the following observation we can conclude that the middle 50% of standard deviation with length n-1 is mostly near to 10 hence we can conclude that standard deviation with length n-1 is closer to the actual standard deviation of 10 As 50% of the values are near to actual standard deviation of 10.
